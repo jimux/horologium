@@ -1,0 +1,7 @@
+.idea
+.env
+serve-angular.sh
+db.sqlite3
+secret.key
+*.pyc
+__pycache__
