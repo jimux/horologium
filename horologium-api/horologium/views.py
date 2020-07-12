@@ -90,6 +90,22 @@ class DurationViewSet(viewsets.ModelViewSet):
         return Duration.objects.filter(timer__owner=user)
 
 
+class DurationSubViewSet(viewsets.ModelViewSet):
+    serializer_class = DurationSerializer
+
+    def get_queryset(self):
+        user = self.request.user
+        if user.is_superuser:
+            return Duration.objects.all()
+        return Duration.objects.filter(timer__owner=user)
+
+    def list(self, request, timer_pk=None, **kwargs):
+        qs = self.get_queryset()
+        serializer = self.serializer_class(qs.filter(timer=timer_pk), context={'request': request}, many=True)
+        return Response(serializer.data)
+
+
+
 class CountdownViewSet(viewsets.ModelViewSet):
     serializer_class = CountdownSerializer
 

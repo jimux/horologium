@@ -1,12 +1,21 @@
-from django.db import models
 from django.conf import settings
 from django.core.validators import RegexValidator, MinLengthValidator
+from django.db import models
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 from django.utils import timezone
+from rest_framework.authtoken.models import Token
 from sanitizer.models import SanitizedCharField
 
 
 alphanumerics = RegexValidator(r'^[A-Za-z0-9][\.a-zA-Z0-9_@\-]*$', 'Alphanumerics only.')
 minlength = MinLengthValidator(1, message='Field must not be empty')
+
+
+@receiver(post_save, sender=settings.AUTH_USER_MODEL)
+def create_auth_token(sender, instance=None, created=False, **kwargs):
+    if created:
+        Token.objects.create(user=instance)
 
 
 class Timer(models.Model):

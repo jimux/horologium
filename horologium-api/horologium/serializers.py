@@ -70,6 +70,8 @@ class TimerSerializer(BaseModelSerializer):
 
 
 class DurationSerializer(BaseModelSerializer):
+    timer = PrimaryKeyRelatedField(queryset=Timer.objects.all())
+
     def validate_timer(self, timer):
         if timer.owner != self.request.user and not self.request.user.is_superuser:
             raise ValidationError("Can not assign duration to other's timer.")

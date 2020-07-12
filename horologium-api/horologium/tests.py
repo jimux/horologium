@@ -113,6 +113,9 @@ class ClockTestCase(APITestCase):
         # Should have elapsed at least two seconds. If longer than three, this test has issues...
         timer = self.get('timers/%s/' % timer['id'])
 
+        data = self.get('timers/%s/durations' % timer['id'])
+        self.assertEqual(len(data), 2)
+
         self.assertGreaterEqual(timer['elapsed'], 2)
         self.assertLess(timer['elapsed'], 3)
         self.logout()
