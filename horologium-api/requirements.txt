@@ -1,4 +1,4 @@
-django==3.0.7
+django==3.1.6
 djangorestframework==3.11.0
 django_html_sanitizer==0.1.5
 drf-nested-routers==0.91.0
